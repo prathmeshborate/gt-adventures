@@ -86,6 +86,20 @@ export default function AdminTrekManagerPage() {
     setLoading(false);
   };
 
+  const handleCompleteTrek = async (id: string) => {
+    if (window.confirm("Are you sure you want to mark this trek as COMPLETED?")) {
+      await supabase.from("treks").update({ status: "COMPLETED" }).eq("id", id);
+      await fetchTreksAndBookings();
+    }
+  };
+
+  const handleCancelTrek = async (id: string) => {
+    if (window.confirm("Are you sure you want to CANCEL this trek?")) {
+      await supabase.from("treks").update({ status: "CANCELLED" }).eq("id", id);
+      await fetchTreksAndBookings();
+    }
+  };
+
   const stats = useMemo(() => {
     return {
       total: treks.length,
@@ -346,7 +360,7 @@ export default function AdminTrekManagerPage() {
                               {t.status === "UPCOMING" && (
                                 <>
                                   <button 
-                                    onClick={() => setCompletionModal({ isOpen: true, trekId: t.id, trekTitle: t.title })} 
+                                    onClick={() => handleCompleteTrek(t.id)} 
                                     className="px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs font-bold transition"
                                   >
                                     Mark Completed
