@@ -61,6 +61,12 @@ export default function AdminTrekManagerPage() {
   const [offlinePassengers, setOfflinePassengers] = useState([{ name: "", age: "", gender: "Male" }]);
   const [isSavingOffline, setIsSavingOffline] = useState(false);
 
+  // Completion Modal State
+  const [completionModal, setCompletionModal] = useState({ isOpen: false, trekId: "", trekTitle: "" });
+  const [completionNotes, setCompletionNotes] = useState("");
+  const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
+  const [isCompleting, setIsCompleting] = useState(false);
+
   useEffect(() => {
     const fetchAdminData = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -86,10 +92,47 @@ export default function AdminTrekManagerPage() {
     setLoading(false);
   };
 
-  const handleCompleteTrek = async (id: string) => {
-    if (window.confirm("Are you sure you want to mark this trek as COMPLETED?")) {
-      await supabase.from("treks").update({ status: "COMPLETED" }).eq("id", id);
+  const submitTrekCompletion = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsCompleting(true);
+
+    try {
+      const uploadedUrls: string[] = [];
+      
+      // 1. Upload all selected gallery images to Supabase Storage
+      for (const file of galleryFiles) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `gallery/${completionModal.trekId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage.from("trek_images").upload(fileName, file);
+        if (!uploadError) {
+          const { data } = supabase.storage.from("trek_images").getPublicUrl(fileName);
+          uploadedUrls.push(data.publicUrl);
+        }
+      }
+
+      // 2. Fetch current description to append the new post-trek notes
+      const { data: currentTrek } = await supabase.from("treks").select("description").eq("id", completionModal.trekId).single();
+      const newDescription = completionNotes 
+        ? `${currentTrek?.description}\n\n--- Post Trek Notes ---\n${completionNotes}`
+        : currentTrek?.description;
+
+      // 3. Update the Trek in the database
+      await supabase.from("treks").update({ 
+        status: "COMPLETED",
+        gallery_images: uploadedUrls,
+        description: newDescription
+      }).eq("id", completionModal.trekId);
+
+      alert("Trek successfully marked as COMPLETED and added to the Wall of Fame!");
+      setCompletionModal({ isOpen: false, trekId: "", trekTitle: "" });
+      setCompletionNotes("");
+      setGalleryFiles([]);
       await fetchTreksAndBookings();
+    } catch (error: any) {
+      alert("Error completing trek: " + error.message);
+    } finally {
+      setIsCompleting(false);
     }
   };
 
@@ -351,16 +394,15 @@ export default function AdminTrekManagerPage() {
                               </div>
                             </div>
                             
-                            {/* --- UPDATED: Bottom Action Buttons (Now beautifully on one line!) --- */}
+                            {/* --- UPDATED: Bottom Action Buttons --- */}
                             <div className="flex flex-wrap items-center gap-2 mt-2 pt-3 border-t border-gray-100">
-                              <button onClick={() => handleEditTrek(t)} className="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs font-bold transition">
-                                Edit Details
-                              </button>
-                              
-                              {t.status === "UPCOMING" && (
+                              {t.status === "UPCOMING" ? (
                                 <>
+                                  <button onClick={() => handleEditTrek(t)} className="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs font-bold transition">
+                                    Edit Details
+                                  </button>
                                   <button 
-                                    onClick={() => handleCompleteTrek(t.id)} 
+                                    onClick={() => setCompletionModal({ isOpen: true, trekId: t.id, trekTitle: t.title })} 
                                     className="px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs font-bold transition"
                                   >
                                     Mark Completed
@@ -372,6 +414,10 @@ export default function AdminTrekManagerPage() {
                                     Cancel Trek
                                   </button>
                                 </>
+                              ) : (
+                                <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">
+                                  Trek is {t.status} — Editing Disabled
+                                </span>
                               )}
                             </div>
                           </div>
@@ -658,6 +704,70 @@ export default function AdminTrekManagerPage() {
                 <button type="button" onClick={() => setOfflineModalOpen(false)} className="flex-1 bg-gray-100 text-slate-700 font-bold py-3 rounded-xl transition">Cancel</button>
                 <button type="submit" disabled={isSavingOffline} className="flex-1 bg-yellow-500 text-black font-bold py-3 rounded-xl transition disabled:opacity-50">
                   {isSavingOffline ? "Saving..." : `Confirm ₹${activeTrekForRoster?.amount * offlinePassengers.length}`}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* --- COMPLETION & GALLERY UPLOAD MODAL --- */}
+      {completionModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-6 border-b border-gray-100 bg-slate-50 rounded-t-2xl">
+              <h3 className="text-xl font-bold text-slate-900">Complete Expedition</h3>
+              <p className="text-sm text-gray-500 mt-1">Upload memories for <span className="font-bold text-slate-700">{completionModal.trekTitle}</span></p>
+            </div>
+            
+            <form onSubmit={submitTrekCompletion} className="p-6 flex flex-col gap-5">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Post-Trek Notes / Memories (Optional)</label>
+                <textarea 
+                  rows={3}
+                  className="w-full border border-gray-300 p-3 rounded-xl outline-none focus:ring-2 focus:ring-green-500" 
+                  placeholder="How was the weather? Any fun moments? (This will be appended to the trek description)"
+                  value={completionNotes} 
+                  onChange={e => setCompletionNotes(e.target.value)} 
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Upload Gallery Photos</label>
+                <input 
+                  type="file" 
+                  multiple 
+                  accept="image/*" 
+                  className="w-full text-sm bg-gray-50 border border-gray-200 p-3 rounded-xl" 
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      setGalleryFiles(Array.from(e.target.files));
+                    }
+                  }} 
+                />
+                <p className="text-xs text-gray-500 mt-2">
+                  {galleryFiles.length > 0 ? `${galleryFiles.length} files selected for upload.` : "Select multiple photos to show on the Wall of Fame."}
+                </p>
+              </div>
+
+              <div className="flex gap-3 mt-2 border-t border-gray-100 pt-5">
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    setCompletionModal({ isOpen: false, trekId: "", trekTitle: "" });
+                    setGalleryFiles([]);
+                    setCompletionNotes("");
+                  }} 
+                  className="flex-1 bg-gray-100 text-slate-700 font-bold py-3 rounded-xl transition hover:bg-gray-200"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  disabled={isCompleting || galleryFiles.length === 0} 
+                  className="flex-1 bg-green-600 text-white font-bold py-3 rounded-xl transition hover:bg-green-700 disabled:opacity-50"
+                >
+                  {isCompleting ? "Uploading & Saving..." : "Mark Completed"}
                 </button>
               </div>
             </form>

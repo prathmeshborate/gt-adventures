@@ -18,8 +18,6 @@ export default async function TrekDetailsPage({
     .eq("id", trekId)
     .single();
 
-// ... the rest of your code remains exactly the same!
-
   // If someone types a wrong ID, show a 404 page
   if (error || !trek) {
     notFound();
@@ -30,11 +28,15 @@ export default async function TrekDetailsPage({
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
   });
 
+  // Determine the status flags
+  const isUpcoming = trek.status === "UPCOMING";
+  const isCompleted = trek.status === "COMPLETED";
+
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 pb-20">
       
       {/* Header Image Section */}
-      <div className="relative w-full h-[50vh] bg-slate-900">
+      <div className="relative w-full h-[40vh] md:h-[50vh] bg-slate-900">
         {trek.cover_image_url ? (
           <img 
             src={trek.cover_image_url} 
@@ -48,68 +50,68 @@ export default async function TrekDetailsPage({
       </div>
 
       {/* Content Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-32 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 md:-mt-32 relative z-10">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
           
           {/* Left Column: Details */}
-          <div className="flex-grow bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+          <div className="flex-grow bg-white p-5 md:p-8 rounded-2xl shadow-sm border border-gray-200">
             <div className="mb-4">
-              <span className="bg-yellow-100 text-yellow-800 text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+              <span className="bg-yellow-100 text-yellow-800 text-xs md:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wide">
                 {trek.difficulty_level}
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-gray-900">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-gray-900 leading-tight">
               {trek.title}
             </h1>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 border-y border-gray-100 py-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 border-y border-gray-100 py-6">
               <div>
-                <p className="text-sm text-gray-500 font-semibold">Duration</p>
-                <p className="font-bold text-gray-900">{trek.duration}</p>
+                <p className="text-xs md:text-sm text-gray-500 font-semibold">Duration</p>
+                <p className="text-sm md:text-base font-bold text-gray-900">{trek.duration}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-semibold">Capacity</p>
-                <p className="font-bold text-gray-900">{trek.max_seats} Seats</p>
+                <p className="text-xs md:text-sm text-gray-500 font-semibold">Capacity</p>
+                <p className="text-sm md:text-base font-bold text-gray-900">{trek.max_seats} Seats</p>
               </div>
               <div className="col-span-2">
-                <p className="text-sm text-gray-500 font-semibold">Meals</p>
-                <p className="font-bold text-gray-900 line-clamp-1">{trek.meals_included}</p>
+                <p className="text-xs md:text-sm text-gray-500 font-semibold">Meals</p>
+                <p className="text-sm md:text-base font-bold text-gray-900 line-clamp-2">{trek.meals_included}</p>
               </div>
             </div>
 
-            <h2 className="text-2xl font-bold mb-4">About this Trek</h2>
-            <div className="prose prose-gray max-w-none text-gray-700 whitespace-pre-wrap leading-relaxed mb-8">
+            <h2 className="text-xl md:text-2xl font-bold mb-4">About this Trek</h2>
+            <div className="prose prose-sm md:prose-base prose-gray max-w-none text-gray-700 whitespace-pre-wrap leading-relaxed mb-8">
               {trek.description}
             </div>
 
-            <h2 className="text-2xl font-bold mb-4">Logistics</h2>
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 flex flex-col gap-4">
+            <h2 className="text-xl md:text-2xl font-bold mb-4">Logistics</h2>
+            <div className="bg-gray-50 rounded-xl p-5 md:p-6 border border-gray-200 flex flex-col gap-4 text-sm md:text-base">
               <div className="flex flex-col sm:flex-row sm:justify-between border-b border-gray-200 pb-3">
-                <span className="font-semibold text-gray-900">Meeting Point:</span>
-                <span className="text-gray-700">{trek.meeting_point}</span>
+                <span className="font-semibold text-gray-900 mb-1 sm:mb-0">Meeting Point:</span>
+                <span className="text-gray-700 text-left sm:text-right">{trek.meeting_point}</span>
               </div>
               <div className="flex flex-col sm:flex-row sm:justify-between border-b border-gray-200 pb-3">
-                <span className="font-semibold text-gray-900">Meeting Time:</span>
-                <span className="text-gray-700">{trek.meeting_time}</span>
+                <span className="font-semibold text-gray-900 mb-1 sm:mb-0">Meeting Time:</span>
+                <span className="text-gray-700 text-left sm:text-right">{trek.meeting_time}</span>
               </div>
               <div className="flex flex-col sm:flex-row sm:justify-between">
-                <span className="font-semibold text-gray-900">Transportation:</span>
-                <span className="text-gray-700">{trek.transportation}</span>
+                <span className="font-semibold text-gray-900 mb-1 sm:mb-0">Transportation:</span>
+                <span className="text-gray-700 text-left sm:text-right">{trek.transportation}</span>
               </div>
             </div>
           </div>
 
           {/* Right Column: Sticky Booking Widget */}
           <div className="w-full lg:w-96 shrink-0">
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 sticky top-28">
-              <p className="text-gray-500 font-medium mb-1">Starting from</p>
+            <div className="bg-white p-5 md:p-6 rounded-2xl shadow-lg border border-gray-200 lg:sticky lg:top-28 mb-6 lg:mb-0">
+              <p className="text-gray-500 font-medium mb-1 text-sm md:text-base">Starting from</p>
               <div className="flex items-end gap-2 mb-6">
-                <h3 className="text-4xl font-black text-gray-900">₹{trek.amount}</h3>
-                <span className="text-gray-500 mb-1">/ person</span>
+                <h3 className="text-3xl md:text-4xl font-black text-gray-900">₹{trek.amount}</h3>
+                <span className="text-gray-500 mb-1 text-sm">/ person</span>
               </div>
               
-              <div className="space-y-4 mb-6">
+              <div className="space-y-4 mb-6 text-sm md:text-base">
                 <div className="flex items-center gap-3 text-gray-700">
                   <span className="font-bold text-slate-900">📅 Date:</span> 
                   {formattedDate}
@@ -120,17 +122,27 @@ export default async function TrekDetailsPage({
                 </div>
               </div>
 
-              {/* Next step: This button will lead to our passenger booking form */}
-              <Link 
-                href={`/book/${trek.id}`}
-                className="block w-full text-center bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-lg py-4 rounded-xl transition-all shadow-md"
-              >
-                Book Your Spot Now
-              </Link>
-              
-              <p className="text-center text-xs text-gray-400 mt-4">
-                Secure payments via UPI QR Code.
-              </p>
+              {/* Dynamic Booking Button */}
+              {isUpcoming ? (
+                <>
+                  <Link 
+                    href={`/book/${trek.id}`}
+                    className="block w-full text-center bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-base md:text-lg py-4 rounded-xl transition-all shadow-md"
+                  >
+                    Book Your Spot Now
+                  </Link>
+                  <p className="text-center text-xs text-gray-400 mt-4">
+                    Secure payments via UPI QR Code.
+                  </p>
+                </>
+              ) : (
+                <button 
+                  disabled
+                  className="block w-full text-center bg-gray-200 text-gray-500 font-bold text-base md:text-lg py-4 rounded-xl cursor-not-allowed"
+                >
+                  {isCompleted ? "Trek Completed" : "Trek Cancelled"}
+                </button>
+              )}
             </div>
           </div>
 
