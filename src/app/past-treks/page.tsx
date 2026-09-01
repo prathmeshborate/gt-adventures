@@ -33,9 +33,9 @@ export default function PastTreksPage() {
     <main className="min-h-screen bg-gray-50 pb-24">
       
       {/* Header Section */}
-      <div className="bg-slate-900 pt-24 pb-32 px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">Wall of Fame</h1>
-        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+      <div className="bg-slate-900 pt-20 pb-28 sm:pt-24 sm:pb-32 px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">Wall of Fame</h1>
+        <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
           Explore the memories, summits, and stories from our past expeditions. 
         </p>
       </div>
@@ -57,9 +57,9 @@ export default function PastTreksPage() {
                 <div key={trek.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                   
                   {/* Trek Header Info */}
-                  <div className="p-6 sm:p-8 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="p-6 sm:p-8 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <div className="flex items-center gap-3 mb-2">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                         <h2 className="text-2xl font-black text-slate-900">{trek.title}</h2>
                         <span className="bg-green-100 text-green-700 text-[10px] font-black px-2 py-1 rounded uppercase tracking-wider">
                           Summit Reached
@@ -95,7 +95,7 @@ export default function PastTreksPage() {
                             key={index} 
                             className={`rounded-xl overflow-hidden bg-gray-200 relative group ${
                               // Make the first image span 2 columns if there are many images for a cool masonry effect
-                              index === 0 && allImages.length > 3 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"
+                              index === 0 && allImages.length > 3 ? "sm:col-span-2 sm:row-span-2 aspect-square" : "aspect-square"
                             }`}
                           >
                             <img 

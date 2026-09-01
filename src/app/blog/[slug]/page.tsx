@@ -37,7 +37,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     <main className="min-h-screen bg-white">
       
       {/* Post Header / Hero */}
-      <section className="relative h-[60vh] min-h-[400px] w-full bg-slate-900 flex items-end pb-20">
+      <section className="relative h-[45vh] min-h-[320px] sm:h-[60vh] sm:min-h-[400px] w-full bg-slate-900 flex items-end pb-10 sm:pb-20">
         {post.cover_image_url && (
           <div className="absolute inset-0 z-0">
             <img 
@@ -53,10 +53,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <Link href="/blog" className="text-yellow-500 font-bold hover:text-yellow-400 mb-6 inline-block text-sm tracking-wide uppercase">
             ← Back to Articles
           </Link>
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
             {post.title}
           </h1>
-          <div className="flex items-center justify-center gap-4 text-sm font-bold text-gray-300">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-sm font-bold text-gray-300">
             <span>By {post.author}</span>
             <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
             <span>{new Date(post.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
@@ -65,7 +65,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </section>
 
       {/* The Article Content */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         
         <article className="prose prose-lg prose-slate max-w-none 
           prose-headings:font-black prose-headings:tracking-tight prose-headings:text-slate-900

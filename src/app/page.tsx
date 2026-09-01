@@ -60,12 +60,12 @@ export default function HomePage() {
   return (
     <main className="bg-gray-50 min-h-screen overflow-x-hidden pb-16 sm:pb-20">
       {/* 1. HERO SECTION */}
-      <section className="relative bg-slate-900 text-white px-4 pt-20 pb-28 sm:px-6 sm:pt-28 sm:pb-32 lg:px-8 lg:pt-32 lg:pb-40 overflow-hidden">
+      <section className="relative bg-slate-900 text-white px-4 pt-16 pb-24 sm:px-6 sm:pt-28 sm:pb-32 lg:px-8 lg:pt-32 lg:pb-40 overflow-hidden">
         <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center mix-blend-overlay" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
 
         <div className="max-w-5xl mx-auto relative z-10 text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-5 sm:mb-6 leading-[1.05] tracking-tight [text-wrap:balance]">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-5 sm:mb-6 leading-[1.05] tracking-tight [text-wrap:balance]">
             Escape the City.<br />
             <span className="text-yellow-500">Conquer the Mountains.</span>
           </h1>
@@ -133,7 +133,7 @@ export default function HomePage() {
       </section>
 
       {/* CORPORATE B2B HOOK */}
-      <section className="relative py-16 sm:py-20 md:py-24 bg-slate-900 overflow-hidden border-y border-slate-800 mt-14 sm:mt-16">
+      <section className="relative py-12 sm:py-20 md:py-24 bg-slate-900 overflow-hidden border-y border-slate-800 mt-10 sm:mt-16">
         <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center mix-blend-overlay" />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/90 to-transparent z-0" />
 
@@ -157,18 +157,18 @@ export default function HomePage() {
 
       {/* 3. WHY CHOOSE US (Trust Builders) */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20 md:mt-24">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
-          <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+          <div className="text-center p-5 sm:p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
             <div className="w-14 h-14 bg-yellow-50 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🏆</div>
             <h3 className="font-bold text-slate-900 text-lg mb-2">Expert Leaders</h3>
             <p className="text-gray-500 text-sm">Certified mountaineers with certified first-aid training leading every batch.</p>
           </div>
-          <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+          <div className="text-center p-5 sm:p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
             <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🤝</div>
             <h3 className="font-bold text-slate-900 text-lg mb-2">Community First</h3>
             <p className="text-gray-500 text-sm">Come solo, leave with lifelong friends. We focus on group bonding.</p>
           </div>
-          <div className="text-center p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+          <div className="text-center p-5 sm:p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
             <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🛡️</div>
             <h3 className="font-bold text-slate-900 text-lg mb-2">Safe & Secure</h3>
             <p className="text-gray-500 text-sm">Strict safety protocols, quality equipment, and carefully scouted routes.</p>
@@ -219,7 +219,7 @@ export default function HomePage() {
       <section className="py-16 sm:py-20 md:py-24 bg-gray-50 mt-14 sm:mt-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 sm:mb-10 md:mb-12 gap-4 sm:gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 sm:mb-10 md:mb-12 gap-4 sm:gap-6">
             <div>
               <span className="text-yellow-600 font-bold uppercase tracking-wider text-xs sm:text-sm mb-2 block">
                 Tips & Resources

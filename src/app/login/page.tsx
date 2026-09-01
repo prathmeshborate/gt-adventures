@@ -61,7 +61,7 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl border border-gray-100 sm:rounded-2xl sm:px-10">
+        <div className="bg-white py-8 px-6 shadow-xl border border-gray-100 rounded-2xl sm:px-10 mx-4 sm:mx-0">
           
           {message.text && (
             <div className={`mb-4 p-4 rounded-lg text-sm font-medium ${message.type === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-green-50 text-green-700 border border-green-200'}`}>

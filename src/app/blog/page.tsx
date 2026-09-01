@@ -16,15 +16,15 @@ export default async function BlogCatalog() {
   return (
     <main className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
-      <section className="bg-slate-900 pt-32 pb-20 px-4 sm:px-6 lg:px-8 text-center text-white border-b border-slate-800">
+      <section className="bg-slate-900 pt-24 pb-16 sm:pt-32 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center text-white border-b border-slate-800">
         <div className="max-w-4xl mx-auto">
           <span className="text-yellow-500 font-bold tracking-widest uppercase text-sm mb-4 block">
             The Explorer's Journal
           </span>
-          <h1 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 tracking-tight">
             Trekking Guides & Resources
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
             Expert advice, trail histories, and packing guides to help you conquer the Sahyadris.
           </p>
         </div>
@@ -38,11 +38,15 @@ export default async function BlogCatalog() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
-              <Link href={`/blog/${post.slug}`} key={post.slug} className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+            {posts.map((post, index) => (
+              <Link href={`/blog/${post.slug}`} key={post.slug} className={`group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 ${
+                index === 0 ? "md:col-span-2 lg:col-span-3 flex flex-col sm:flex-row" : "flex flex-col"
+              }`}>
                 
                 {/* Cover Image */}
-                <div className="relative h-56 w-full overflow-hidden bg-gray-200">
+                <div className={`relative overflow-hidden bg-gray-200 shrink-0 ${
+                  index === 0 ? "h-56 sm:h-auto sm:w-2/5" : "h-56 w-full"
+                }`}>
                   {post.cover_image_url ? (
                     <img 
                       src={post.cover_image_url} 

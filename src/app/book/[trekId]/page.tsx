@@ -160,7 +160,7 @@ export default function BookTrekPage() {
               ) : (
                 <div className="flex flex-col gap-3">
                   {savedRoster.map((p) => (
-                    <label key={p.id} className={`flex items-center p-4 border rounded-xl cursor-pointer transition ${selectedPassengerIds.includes(p.id) ? 'border-yellow-500 bg-yellow-50' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'}`}>
+                    <label key={p.id} className={`flex items-center p-4 sm:p-4 border rounded-xl min-h-[56px] cursor-pointer transition ${selectedPassengerIds.includes(p.id) ? 'border-yellow-500 bg-yellow-50' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'}`}>
                       <input 
                         type="checkbox" 
                         className="w-5 h-5 text-yellow-600 rounded focus:ring-yellow-500"
@@ -205,14 +205,14 @@ export default function BookTrekPage() {
                   />
                 </div>
 
-                <div className="border-t border-gray-100 pt-4 mt-2 flex justify-between items-end">
+                <div className="border-t border-gray-100 pt-4 mt-2 flex flex-col sm:flex-row justify-between items-stretch sm:items-end gap-4">
                   <div>
                     <p className="text-gray-500 text-sm font-medium">Total Amount</p>
                     <p className="text-3xl font-black text-slate-900">₹{totalAmount}</p>
                   </div>
                   <button 
                     type="submit" disabled={isSubmitting || selectedPassengerIds.length === 0}
-                    className="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-8 rounded-xl transition-all disabled:opacity-50"
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-8 rounded-xl transition-all disabled:opacity-50 w-full sm:w-auto"
                   >
                     {isSubmitting ? "Processing..." : "Submit Booking"}
                   </button>

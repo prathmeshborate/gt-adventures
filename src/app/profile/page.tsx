@@ -288,7 +288,7 @@ export default function ProfilePage() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm border-y border-gray-100 py-3 mb-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 text-sm border-y border-gray-100 py-3 mb-3">
             <div>
               <p className="text-gray-500">Trekkers</p>
               <p className="font-bold text-slate-900">{b.passengers?.length ?? 0}</p>
@@ -356,14 +356,14 @@ export default function ProfilePage() {
     <main className="min-h-screen bg-gray-50 pb-20">
 
       {/* Profile Header */}
-      <div className="bg-slate-900 pt-20 pb-32 px-4 sm:px-6 lg:px-8">
+      <div className="bg-slate-900 pt-16 pb-28 sm:pt-20 sm:pb-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center gap-6">
-          <div className="h-24 w-24 bg-yellow-500 rounded-full flex items-center justify-center text-4xl font-black text-slate-900 border-4 border-slate-800 shadow-xl shrink-0">
+          <div className="h-16 w-16 sm:h-24 sm:w-24 bg-yellow-500 rounded-full flex items-center justify-center text-2xl sm:text-4xl font-black text-slate-900 border-4 border-slate-800 shadow-xl shrink-0">
             {avatarLetter}
           </div>
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold text-white">{displayName}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white">{displayName}</h1>
               {profile?.role === "admin" && (
                 <span className="bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
                   Admin
@@ -379,9 +379,9 @@ export default function ProfilePage() {
       </div>
 
       {/* Stat Strip */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 sm:-mt-20 relative z-10">
         {profile?.role !== "admin" && (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
             {[
               { label: "Treks Completed", value: stats.completed },
               { label: "Upcoming Treks", value: stats.upcoming },
@@ -389,7 +389,7 @@ export default function ProfilePage() {
               { label: "Total Spent", value: `₹${stats.totalSpent}` },
             ].map((stat) => (
               <div key={stat.label} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
-                <p className="text-3xl font-black text-slate-900">{stat.value}</p>
+                <p className="text-2xl sm:text-3xl font-black text-slate-900">{stat.value}</p>
                 <p className="text-sm text-gray-500 font-medium mt-1">{stat.label}</p>
               </div>
             ))}
@@ -398,14 +398,14 @@ export default function ProfilePage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          {/* Sidebar Navigation */}
+          {/* Sidebar Navigation — horizontal scroll on mobile, vertical sidebar on desktop */}
           <div className="lg:col-span-1 flex flex-col gap-4">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 flex flex-col gap-2 lg:sticky lg:top-28">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-3 sm:p-4 flex lg:flex-col gap-2 overflow-x-auto scrollbar-hide lg:overflow-visible lg:sticky lg:top-28">
               {currentTabs.map((tab) => (
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`text-left px-4 py-3 rounded-xl font-medium transition ${
+                  className={`text-left whitespace-nowrap px-4 py-3 rounded-xl font-medium transition text-sm sm:text-base ${
                     activeTab === tab.key
                       ? "bg-slate-50 text-slate-900 font-bold border-l-4 border-yellow-500"
                       : "text-gray-500 hover:bg-gray-50"
@@ -419,7 +419,7 @@ export default function ProfilePage() {
 
               <button
                 onClick={handleSignOut}
-                className="text-left px-4 py-3 rounded-xl text-red-500 font-medium hover:bg-red-50 transition mt-2 border-t border-gray-100 pt-4"
+                className="text-left whitespace-nowrap px-4 py-3 rounded-xl text-red-500 font-medium hover:bg-red-50 transition mt-2 lg:border-t border-gray-100 lg:pt-4 text-sm sm:text-base"
               >
                 Sign Out
               </button>
@@ -435,11 +435,11 @@ export default function ProfilePage() {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                   <div className="bg-blue-50 border border-blue-100 p-5 rounded-xl text-center">
-                    <p className="text-3xl font-black text-blue-700">{adminStats.activeTreks}</p>
+                    <p className="text-2xl sm:text-3xl font-black text-blue-700">{adminStats.activeTreks}</p>
                     <p className="text-sm font-bold text-blue-600 uppercase mt-1">Active Treks</p>
                   </div>
                   <div className="bg-amber-50 border border-amber-100 p-5 rounded-xl text-center">
-                    <p className="text-3xl font-black text-amber-700">{adminStats.pendingBookings}</p>
+                    <p className="text-2xl sm:text-3xl font-black text-amber-700">{adminStats.pendingBookings}</p>
                     <p className="text-sm font-bold text-amber-600 uppercase mt-1">Pending Verifications</p>
                   </div>
                 </div>
@@ -495,7 +495,7 @@ export default function ProfilePage() {
                     </div>
                   ) : (
                     <div className="rounded-xl overflow-hidden border border-gray-200">
-                      <div className="relative h-40 bg-slate-900">
+                      <div className="relative h-32 sm:h-40 bg-slate-900">
                         {nextTrek.treks?.cover_image_url && (
                           <img
                             src={nextTrek.treks.cover_image_url}
@@ -514,7 +514,7 @@ export default function ProfilePage() {
                         </div>
                       </div>
 
-                      <div className="p-5 grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+                      <div className="p-4 sm:p-5 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 text-sm">
                         <div>
                           <p className="text-gray-500">Status</p>
                           <p className="font-bold text-slate-900">{STATUS_LABELS[nextTrek.booking_status]}</p>

@@ -64,7 +64,7 @@ export default function CorporatePage() {
     <main className="min-h-screen bg-gray-50 pb-24">
       
       {/* 1. HERO SECTION */}
-      <section className="relative bg-slate-900 text-white pt-32 pb-40 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative bg-slate-900 text-white pt-24 pb-32 sm:pt-32 sm:pb-40 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center mix-blend-overlay" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent" />
         
@@ -72,13 +72,13 @@ export default function CorporatePage() {
           <span className="text-yellow-500 font-bold tracking-widest uppercase text-sm mb-4 block">
             GT Adventures For Business
           </span>
-          <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight">
             Take Your Team Out of the Boardroom and Into the Wild
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">
             Premium corporate outings, high-impact leadership training, and unforgettable team bonding experiences designed for modern companies.
           </p>
-          <a href="#quote-form" className="inline-block bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold py-4 px-10 rounded-xl transition-all shadow-lg shadow-yellow-500/20 text-lg">
+          <a href="#quote-form" className="inline-block bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold py-3.5 px-8 sm:py-4 sm:px-10 w-full sm:w-auto text-center rounded-xl transition-all shadow-lg shadow-yellow-500/20 text-lg">
             Request a Custom Quote
           </a>
         </div>
@@ -86,27 +86,27 @@ export default function CorporatePage() {
 
       {/* 2. THE TRUST BAR */}
       <div className="bg-white border-y border-gray-200 py-8">
-        <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 text-center">
+        <div className="max-w-5xl mx-auto px-4 grid grid-cols-3 md:flex md:flex-row justify-center items-center gap-4 md:gap-16 text-center">
           <div>
-            <p className="text-3xl font-black text-slate-900">100%</p>
+            <p className="text-xl sm:text-3xl font-black text-slate-900">100%</p>
             <p className="text-sm font-bold text-gray-500 uppercase tracking-wide">Safety Record</p>
           </div>
           <div className="hidden md:block w-px h-12 bg-gray-200" />
           <div>
-            <p className="text-3xl font-black text-slate-900">End-to-End</p>
+            <p className="text-xl sm:text-3xl font-black text-slate-900">End-to-End</p>
             <p className="text-sm font-bold text-gray-500 uppercase tracking-wide">Event Management</p>
           </div>
           <div className="hidden md:block w-px h-12 bg-gray-200" />
           <div>
-            <p className="text-3xl font-black text-slate-900">Certified</p>
+            <p className="text-xl sm:text-3xl font-black text-slate-900">Certified</p>
             <p className="text-sm font-bold text-gray-500 uppercase tracking-wide">Mountaineers & Guides</p>
           </div>
         </div>
       </div>
 
       {/* 3. CORPORATE OFFERINGS */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="text-center mb-16">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div className="text-center mb-10 sm:mb-16">
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Tailored Experiences for Your Team</h2>
           <p className="text-gray-500 max-w-2xl mx-auto">Whether you want to relax by a campfire or push your team to their physical limits, we handle the logistics from start to finish.</p>
         </div>
@@ -135,7 +135,7 @@ export default function CorporatePage() {
       <section id="quote-form" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col md:flex-row">
           
-          <div className="bg-slate-900 text-white p-10 md:w-2/5 flex flex-col justify-between">
+          <div className="bg-slate-900 text-white p-6 sm:p-10 md:w-2/5 flex flex-col justify-between">
             <div>
               <h3 className="text-2xl font-black mb-4">Let us build your next great offsite.</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-8">
@@ -149,7 +149,7 @@ export default function CorporatePage() {
             </div>
           </div>
 
-          <div className="p-10 md:w-3/5 bg-white">
+          <div className="p-6 sm:p-10 md:w-3/5 bg-white">
             
             {submitStatus.message && (
               <div className={`p-4 rounded-xl mb-6 text-sm font-bold ${

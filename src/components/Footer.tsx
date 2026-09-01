@@ -2,12 +2,12 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 text-gray-400 py-16 border-t border-slate-900 mt-auto">
+    <footer className="bg-slate-950 text-gray-400 py-10 sm:py-16 border-t border-slate-900 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           
           {/* Brand & About */}
-          <div className="col-span-1 md:col-span-1">
+          <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center mb-6">
               <div className="relative h-10 w-10 rounded-full overflow-hidden border-2 border-transparent">
                 <img src="/gt-adventures.png" alt="GT Adventures Logo" className="w-full h-full object-cover" />
@@ -45,12 +45,12 @@ export default function Footer() {
           </div>
 
           {/* Community Newsletter */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <h3 className="text-white font-black uppercase tracking-wider text-sm mb-6">Join the Community</h3>
             <p className="text-sm mb-4">Get notified about early bird tickets and secret trails</p>
-            <div className="flex bg-slate-900 rounded-lg overflow-hidden border border-slate-800">
+            <div className="flex flex-col sm:flex-row bg-slate-900 rounded-lg overflow-hidden border border-slate-800">
               <input type="email" placeholder="Email address" className="bg-transparent w-full px-4 py-2 text-sm outline-none text-white" />
-              <button className="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold px-4 py-2 transition text-sm">
+              <button className="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold px-4 py-2 transition text-sm">
                 Join
               </button>
             </div>
@@ -59,7 +59,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Copyright Bar */}
-        <div className="border-t border-slate-900 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
+        <div className="border-t border-slate-900 mt-10 sm:mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
           <p>© {new Date().getFullYear()} GT Adventures. All rights reserved.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <span className="hover:text-white transition cursor-pointer">Privacy Policy</span>

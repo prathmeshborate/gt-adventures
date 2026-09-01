@@ -33,10 +33,10 @@ export default async function TrekDetailsPage({
   const isCompleted = trek.status === "COMPLETED";
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-900 pb-20">
+    <main className="min-h-screen bg-gray-50 text-gray-900 pb-28 lg:pb-20">
       
       {/* Header Image Section */}
-      <div className="relative w-full h-[40vh] md:h-[50vh] bg-slate-900">
+      <div className="relative w-full h-[35vh] md:h-[50vh] bg-slate-900">
         {trek.cover_image_url ? (
           <img 
             src={trek.cover_image_url} 
@@ -65,7 +65,7 @@ export default async function TrekDetailsPage({
               {trek.title}
             </h1>
             
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 border-y border-gray-100 py-6">
+            <div className="grid grid-cols-2 gap-4 mb-8 border-y border-gray-100 py-6">
               <div>
                 <p className="text-xs md:text-sm text-gray-500 font-semibold">Duration</p>
                 <p className="text-sm md:text-base font-bold text-gray-900">{trek.duration}</p>
@@ -74,7 +74,7 @@ export default async function TrekDetailsPage({
                 <p className="text-xs md:text-sm text-gray-500 font-semibold">Capacity</p>
                 <p className="text-sm md:text-base font-bold text-gray-900">{trek.max_seats} Seats</p>
               </div>
-              <div className="col-span-2">
+              <div>
                 <p className="text-xs md:text-sm text-gray-500 font-semibold">Meals</p>
                 <p className="text-sm md:text-base font-bold text-gray-900 line-clamp-2">{trek.meals_included}</p>
               </div>
@@ -148,6 +148,22 @@ export default async function TrekDetailsPage({
 
         </div>
       </div>
+
+      {/* Sticky Mobile Booking Bar */}
+      {isUpcoming && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex items-center justify-between gap-4 z-50 lg:hidden animate-slide-up shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+          <div>
+            <p className="text-xs text-gray-500 font-medium">Starting from</p>
+            <p className="text-xl font-black text-slate-900">₹{trek.amount}<span className="text-sm font-normal text-gray-500"> /person</span></p>
+          </div>
+          <Link
+            href={`/book/${trek.id}`}
+            className="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all shadow-md text-sm whitespace-nowrap"
+          >
+            Book Now
+          </Link>
+        </div>
+      )}
     </main>
   );
 }

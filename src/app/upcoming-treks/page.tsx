@@ -34,9 +34,9 @@ export default function UpcomingTreksPage() {
     <main className="min-h-screen bg-gray-50 pb-20">
       
       {/* Header Section */}
-      <div className="bg-slate-900 pt-24 pb-32 px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">Upcoming Expeditions</h1>
-        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+      <div className="bg-slate-900 pt-20 pb-28 sm:pt-24 sm:pb-32 px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">Upcoming Expeditions</h1>
+        <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
           Browse our calendar of upcoming treks, hikes, and backpacking trips. Secure your spot before they sell out!
         </p>
       </div>

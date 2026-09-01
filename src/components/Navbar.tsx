@@ -43,18 +43,18 @@ export default function Navbar() {
   return (
     <nav className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-14 sm:h-20">
           
           {/* Brand Logo */}
           <Link href="/" className="flex items-center">
-             <div className="relative h-14 w-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-yellow-500 transition-all duration-300">
+             <div className="relative h-10 w-10 sm:h-14 sm:w-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-yellow-500 transition-all duration-300">
                 <img 
                   src="/gt-adventures.png" 
                   alt="GT Adventures Logo" 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span className="font-bold text-2xl tracking-wider text-white ml-3">
+              <span className="font-bold text-xl sm:text-2xl tracking-wider text-white ml-3">
                 GT <span className="text-yellow-500">ADVENTURES</span>
               </span>
           </Link>
@@ -103,13 +103,16 @@ export default function Navbar() {
       {/* Mobile Drawer */}
       {/* IMPROVEMENT: Changed to fixed positioning, calculated height to sit exactly below the 5rem (80px) navbar */}
       {isOpen && (
-        <div className="md:hidden bg-slate-900 border-t border-slate-800 fixed left-0 right-0 top-20 h-[calc(100vh-5rem)] shadow-2xl z-40 overflow-y-auto">
+        <div className="md:hidden bg-slate-900 border-t border-slate-800 fixed left-0 right-0 top-14 h-[calc(100vh-3.5rem)] animate-slide-down shadow-2xl z-40 overflow-y-auto">
           <div className="px-4 pt-4 pb-12 flex flex-col gap-2">
             <Link href="/upcoming-treks" className="block px-4 py-4 rounded-xl text-base font-bold text-white hover:bg-slate-800">
               Upcoming Treks
             </Link>
             <Link href="/past-treks" className="block px-4 py-4 rounded-xl text-base font-bold text-white hover:bg-slate-800">
               Wall of Fame (Gallery)
+            </Link>
+            <Link href="/blog" className="block px-4 py-4 rounded-xl text-base font-bold text-white hover:bg-slate-800">
+              Trekking Blog
             </Link>
             <Link href="/corporate" className="block px-4 py-4 rounded-xl text-base font-bold text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 mt-4 mb-4">
               Corporate / B2B Quotes
