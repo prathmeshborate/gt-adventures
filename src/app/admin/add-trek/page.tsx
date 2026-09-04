@@ -398,20 +398,27 @@ export default function AdminTrekManagerPage() {
                             <div className="flex flex-wrap items-center gap-2 mt-2 pt-3 border-t border-gray-100">
                               {t.status === "UPCOMING" ? (
                                 <>
-                                  <button onClick={() => handleEditTrek(t)} className="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs font-bold transition">
-                                    Edit Details
-                                  </button>
+                                  {new Date(t.start_date) >= new Date(new Date().setHours(0,0,0,0)) ? (
+                                    <>
+                                      <button onClick={() => handleEditTrek(t)} className="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs font-bold transition">
+                                        Edit Details
+                                      </button>
+                                      <button 
+                                        onClick={() => handleCancelTrek(t.id)} 
+                                        className="px-3 py-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg text-xs font-bold transition"
+                                      >
+                                        Cancel Trek
+                                      </button>
+                                    </>
+                                  ) : (
+                                    <span className="text-xs text-orange-600 font-bold bg-orange-50 px-2 py-1 rounded">Past Due: Requires Completion</span>
+                                  )}
+                                  
                                   <button 
                                     onClick={() => setCompletionModal({ isOpen: true, trekId: t.id, trekTitle: t.title })} 
                                     className="px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs font-bold transition"
                                   >
                                     Mark Completed
-                                  </button>
-                                  <button 
-                                    onClick={() => handleCancelTrek(t.id)} 
-                                    className="px-3 py-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg text-xs font-bold transition"
-                                  >
-                                    Cancel Trek
                                   </button>
                                 </>
                               ) : (

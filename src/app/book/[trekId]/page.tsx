@@ -32,12 +32,11 @@ export default function BookTrekPage() {
       }
       setUser(session.user);
 
-      // 1. Fetch Trek Details
-      const { data: trekData } = await supabase
-        .from("treks")
-        .select("*")
-        .eq("id", trekId)
-        .single();
+      // 1. Fetch Trek Details with capacity
+      const { data: treksList } = await supabase
+        .rpc("get_public_treks");
+      
+      const trekData = treksList?.find((t: any) => t.id === trekId);
       if (trekData) setTrek(trekData);
 
       // 2. Fetch User's Saved Roster
@@ -88,40 +87,34 @@ export default function BookTrekPage() {
 
       if (uploadError) throw uploadError;
 
-      // 2. Create the Booking Row (Status defaults to PENDING)
-      const { data: booking, error: bookingError } = await supabase
-        .from("bookings")
-        .insert({
-          user_id: user.id,
-          trek_id: trekId,
-          utr_number: utrNumber,
-          payment_screenshot_path: fileName,
-          booking_status: "PENDING"
-        })
-        .select()
-        .single();
-
-      if (bookingError) throw bookingError;
-
-      // 3. Insert the Selected Passengers linked to this new booking
+      // 2. Prepare the passengers JSON array
       const passengersToInsert = savedRoster
         .filter(p => selectedPassengerIds.includes(p.id))
         .map(p => ({
-          booking_id: booking.id,
           full_name: p.full_name,
           age: p.age,
           gender: p.gender,
           health_or_disability_notes: p.health_or_disability_notes
         }));
 
-      const { error: passError } = await supabase
-        .from("passengers") // This uses your original passengers table!
-        .insert(passengersToInsert);
+      // 3. Call the atomic booking RPC
+      const { data: finalStatus, error: bookingError } = await supabase.rpc("book_trek_atomic", {
+        p_user_id: user.id,
+        p_trek_id: trekId,
+        p_utr_number: utrNumber,
+        p_payment_screenshot_path: fileName,
+        p_passengers: passengersToInsert
+      });
 
-      if (passError) throw passError;
+      if (bookingError) throw bookingError;
 
-      // 4. Success! Redirect to Profile
-      alert("Booking submitted successfully! Our team will verify your payment.");
+      // 4. Success! Check status and redirect
+      if (finalStatus === "WAITLISTED") {
+        alert("Notice: This trek reached maximum capacity just before you submitted! Your booking has been WAITLISTED. We will contact you if seats open up, or issue a refund.");
+      } else {
+        alert("Booking submitted successfully! Our team will verify your payment.");
+      }
+      
       router.push("/profile");
 
     } catch (error: any) {
@@ -152,6 +145,17 @@ export default function BookTrekPage() {
           <div className="flex flex-col gap-6">
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
               <h2 className="text-xl font-bold text-slate-900 mb-4">1. Who is going?</h2>
+              
+              {trek && trek.max_seats && (
+                <div className="mb-4">
+                  <p className="text-sm font-bold text-gray-500 mb-2">Available Seats: {Math.max(0, trek.max_seats - (trek.booked_seats || 0))}</p>
+                  {(trek.max_seats - (trek.booked_seats || 0)) < selectedPassengerIds.length && (
+                    <div className="p-3 bg-purple-50 text-purple-800 border border-purple-200 rounded-lg text-sm font-medium mb-2">
+                      ⚠️ You are booking {selectedPassengerIds.length} seats but only {Math.max(0, trek.max_seats - (trek.booked_seats || 0))} remain. This booking will automatically be placed on the Waitlist.
+                    </div>
+                  )}
+                </div>
+              )}
               
               {savedRoster.length === 0 ? (
                 <div className="p-4 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-200 text-sm">
@@ -217,6 +221,9 @@ export default function BookTrekPage() {
                     {isSubmitting ? "Processing..." : "Submit Booking"}
                   </button>
                 </div>
+                <p className="text-xs text-gray-500 text-center mt-2">
+                  * Note: If the trek capacity is reached before your payment is verified, you will be placed on a Waitlist. If not confirmed, a full refund will be provided.
+                </p>
               </div>
             </div>
 

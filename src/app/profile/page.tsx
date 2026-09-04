@@ -11,12 +11,14 @@ const PAYMENT_BUCKET = "payment_proofs";
 
 const STATUS_STYLES: Record<string, string> = {
   PENDING: "bg-amber-50 text-amber-700 border-amber-200",
+  WAITLISTED: "bg-purple-50 text-purple-700 border-purple-200",
   CONFIRMED: "bg-green-50 text-green-700 border-green-200",
   CANCELLED: "bg-red-50 text-red-600 border-red-200",
 };
 
 const STATUS_LABELS: Record<string, string> = {
   PENDING: "Awaiting Verification",
+  WAITLISTED: "Waitlisted",
   CONFIRMED: "Confirmed",
   CANCELLED: "Cancelled",
 };
@@ -338,7 +340,7 @@ export default function ProfilePage() {
                 Join WhatsApp Group
               </a>
             )}
-            {options.showActions && b.booking_status === "PENDING" && (
+            {options.showActions && (b.booking_status === "PENDING" || b.booking_status === "WAITLISTED") && (
               <button
                 onClick={() => handleCancelBooking(b.id)}
                 className="text-red-500 hover:text-red-700 transition ml-auto"
@@ -584,7 +586,7 @@ export default function ProfilePage() {
 
                 {/* Filter Pills */}
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {["ALL", "PENDING", "CONFIRMED", "CANCELLED"].map((status) => (
+                  {["ALL", "PENDING", "WAITLISTED", "CONFIRMED", "CANCELLED"].map((status) => (
                     <button
                       key={status}
                       onClick={() => setBookingFilter(status)}

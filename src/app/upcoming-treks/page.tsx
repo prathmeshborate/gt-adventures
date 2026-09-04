@@ -14,10 +14,10 @@ export default function UpcomingTreksPage() {
   useEffect(() => {
     const fetchTreks = async () => {
       const { data } = await supabase
-        .from("treks")
-        .select("*")
+        .rpc("get_public_treks")
         .eq("status", "UPCOMING")
-        .order("start_date", { ascending: true }); // Earliest treks show first
+        .gte("start_date", new Date().toISOString().split('T')[0])
+        .order("start_date", { ascending: true });
 
       if (data) setTreks(data);
       setLoading(false);
@@ -60,8 +60,20 @@ export default function UpcomingTreksPage() {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
                   )}
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur text-slate-900 text-xs font-black px-3 py-1.5 rounded uppercase tracking-wide shadow-sm">
-                    {trek.difficulty_level}
+                  <div className="absolute top-3 right-3 flex flex-col gap-1 items-end">
+                    <div className="bg-white/90 backdrop-blur text-slate-900 text-xs font-black px-2 py-1 rounded shadow-sm">
+                      {trek.difficulty_level}
+                    </div>
+                    {trek.booked_seats >= trek.max_seats && (
+                      <div className="bg-red-500/90 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded shadow-sm uppercase tracking-widest">
+                        Sold Out
+                      </div>
+                    )}
+                    {trek.booked_seats < trek.max_seats && trek.booked_seats >= trek.max_seats * 0.8 && (
+                      <div className="bg-orange-500/90 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded shadow-sm uppercase tracking-widest">
+                        Filling Fast
+                      </div>
+                    )}
                   </div>
                 </div>
                 

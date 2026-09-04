@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import BookingCTA from "@/components/BookingCTA";
 
 export default async function TrekDetailsPage({ 
   params 
@@ -11,12 +12,12 @@ export default async function TrekDetailsPage({
   const resolvedParams = await params;
   const trekId = resolvedParams.id;
 
-  // 1. Fetch the specific trek using the ID from the URL
-  const { data: trek, error } = await supabase
-    .from("treks")
-    .select("*")
-    .eq("id", trekId)
-    .single();
+  // 1. Fetch the specific trek using the RPC to get capacity info
+  const { data: trekList, error } = await supabase
+    .rpc("get_public_treks")
+    .eq("id", trekId);
+    
+  const trek = trekList?.[0];
 
   // If someone types a wrong ID, show a 404 page
   if (error || !trek) {
@@ -28,9 +29,10 @@ export default async function TrekDetailsPage({
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
   });
 
-  // Determine the status flags
-  const isUpcoming = trek.status === "UPCOMING";
-  const isCompleted = trek.status === "COMPLETED";
+  // Check past status for sticky bar display
+  const isPast = new Date(trek.start_date) < new Date();
+  const isUpcoming = trek.status === "UPCOMING" && !isPast;
+  const isFull = trek.booked_seats >= trek.max_seats;
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 pb-28 lg:pb-20">
@@ -55,10 +57,20 @@ export default async function TrekDetailsPage({
           
           {/* Left Column: Details */}
           <div className="flex-grow bg-white p-5 md:p-8 rounded-2xl shadow-sm border border-gray-200">
-            <div className="mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <span className="bg-yellow-100 text-yellow-800 text-xs md:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wide">
                 {trek.difficulty_level}
               </span>
+              {isFull && isUpcoming && (
+                <span className="bg-red-100 text-red-800 text-xs md:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                  Sold Out
+                </span>
+              )}
+              {!isFull && isUpcoming && trek.booked_seats >= trek.max_seats * 0.8 && (
+                <span className="bg-orange-100 text-orange-800 text-xs md:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                  Filling Fast
+                </span>
+              )}
             </div>
             
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-gray-900 leading-tight">
@@ -122,27 +134,9 @@ export default async function TrekDetailsPage({
                 </div>
               </div>
 
-              {/* Dynamic Booking Button */}
-              {isUpcoming ? (
-                <>
-                  <Link 
-                    href={`/book/${trek.id}`}
-                    className="block w-full text-center bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-base md:text-lg py-4 rounded-xl transition-all shadow-md"
-                  >
-                    Book Your Spot Now
-                  </Link>
-                  <p className="text-center text-xs text-gray-400 mt-4">
-                    Secure payments via UPI QR Code.
-                  </p>
-                </>
-              ) : (
-                <button 
-                  disabled
-                  className="block w-full text-center bg-gray-200 text-gray-500 font-bold text-base md:text-lg py-4 rounded-xl cursor-not-allowed"
-                >
-                  {isCompleted ? "Trek Completed" : "Trek Cancelled"}
-                </button>
-              )}
+
+              {/* Dynamic Booking Button / Notify Me */}
+              <BookingCTA trek={trek} />
             </div>
           </div>
 
@@ -150,18 +144,14 @@ export default async function TrekDetailsPage({
       </div>
 
       {/* Sticky Mobile Booking Bar */}
-      {isUpcoming && (
+      {isUpcoming && !isFull && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex items-center justify-between gap-4 z-50 lg:hidden animate-slide-up shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
           <div>
             <p className="text-xs text-gray-500 font-medium">Starting from</p>
             <p className="text-xl font-black text-slate-900">₹{trek.amount}<span className="text-sm font-normal text-gray-500"> /person</span></p>
           </div>
-          <Link
-            href={`/book/${trek.id}`}
-            className="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold py-3 px-6 rounded-xl transition-all shadow-md text-sm whitespace-nowrap"
-          >
-            Book Now
-          </Link>
+
+          <BookingCTA trek={trek} isMobile={true} />
         </div>
       )}
     </main>

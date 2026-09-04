@@ -15,18 +15,17 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchHomepageData = async () => {
-      // Fetch top 3 upcoming treks
+      // Fetch top 3 upcoming treks (only those in the future)
       const { data: upcoming } = await supabase
-        .from("treks")
-        .select("*")
+        .rpc("get_public_treks")
         .eq("status", "UPCOMING")
+        .gte("start_date", new Date().toISOString().split('T')[0])
         .order("start_date", { ascending: true })
         .limit(3);
 
       // Fetch top 3 completed treks for the gallery preview
       const { data: past } = await supabase
-        .from("treks")
-        .select("*")
+        .rpc("get_public_treks")
         .eq("status", "COMPLETED")
         .order("start_date", { ascending: false })
         .limit(3);
@@ -106,8 +105,20 @@ export default function HomePage() {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
                   )}
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur text-slate-900 text-xs font-black px-2 py-1 rounded">
-                    {trek.difficulty_level}
+                  <div className="absolute top-3 right-3 flex flex-col gap-1 items-end">
+                    <div className="bg-white/90 backdrop-blur text-slate-900 text-xs font-black px-2 py-1 rounded shadow-sm">
+                      {trek.difficulty_level}
+                    </div>
+                    {trek.booked_seats >= trek.max_seats && (
+                      <div className="bg-red-500/90 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded shadow-sm uppercase tracking-widest">
+                        Sold Out
+                      </div>
+                    )}
+                    {trek.booked_seats < trek.max_seats && trek.booked_seats >= trek.max_seats * 0.8 && (
+                      <div className="bg-orange-500/90 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded shadow-sm uppercase tracking-widest">
+                        Filling Fast
+                      </div>
+                    )}
                   </div>
                 </div>
 
